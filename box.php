@@ -2,7 +2,7 @@
 /*
 Name: Extended WP Featured Image
 Author: Tim Milligan &amp; Rick Anderson
-Version: 1.2
+Version: 1.3
 Description: Extended WP Featured Image box with size, alignment and link options.
 Class: ewpfi
 */
@@ -55,13 +55,15 @@ class ewpfi extends thesis_wp_featured_image {
 		);
 	}
 
-	public function html() {
+	public function html($args = false) {
+		global $post;
+		extract($args = is_array($args) ? $args : array());
+		$tab = str_repeat("\t", !empty($depth) ? $depth : 0);
             
-                global $post;
-                $size = $this->options['size'] ? $this->options['size'] : 'thumbnail';
-                $alignment = $this->options['alignment'] ? $this->options['alignment'] : 'none';
-                $link = $this->options['link'] ? $this->options['link'] : 'yes';
+		$size = $this->options['size'] ? $this->options['size'] : 'thumbnail';
+		$alignment = $this->options['alignment'] ? $this->options['alignment'] : 'none';
+		$link = $this->options['link'] ? $this->options['link'] : 'yes';
 
-                echo ($link == 'yes' ? '<a href="' . get_permalink($post->ID) . '">' : '') . get_the_post_thumbnail( $post->ID, $size, array('class' => "ewpfi attachment-$size align$alignment")) . ($link == 'yes' ? '</a>' : '');
+		echo $tab . ($link == 'yes' ? '<a href="' . get_permalink($post->ID) . '">' : '') . get_the_post_thumbnail( $post->ID, $size, array('class' => "ewpfi attachment-$size align$alignment")) . ($link == 'yes' ? '</a>' : '');
 	}
 }
